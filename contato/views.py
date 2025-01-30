@@ -1,25 +1,26 @@
-from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.views.generic import ListView,CreateView,DeleteView, UpdateView
+from django.urls import reverse_lazy
 from .forms import ProdutoForm
 from .models import Produto
 
-def create_produto(request):
-    if request.method == "POST":
-        form = ProdutoForm(request.POST)
-        if form.is_valid():
-            produto = Produto()
-            produto.nome = form.cleaned_data['nome']
-            produto.descricao = form.cleaned_data['descricao']
-            produto.preco = form.cleaned_data['preco']
-            produto.categoria = form.cleaned_data['categoria']
-            produto.save()
-            produto.fornecedor.set(form.cleaned_data['fornecedor'])
-            return redirect(reverse('index'))  
-    else:
-        form = ProdutoForm()
+class ProdutoListView(ListView):
+    model = Produto
+    template_name = "produto_list.html"
+    context_object_name = "produtos"
 
-    return render(request, 'contato/create.html', {'form': form})
+class ProdutoCreateView(CreateView):
+    model = Produto
+    form_class = ProdutoForm
+    template_name = "produto_form.html"
+    success_url = reverse_lazy('produto_list')
 
+class ProdutoUpdateView(UpdateView):
+    model = Produto
+    form_class = ProdutoForm
+    template_name = "produto_form.html"
+    success_url = reverse_lazy('roduto_list')
 
-def index(request):
-    return render(request, 'contato/index.html')
+class ProdutoDeleteView(DeleteView):
+    model = Produto
+    template_name = "produto_confirm_delet.html"
+    success_url = reverse_lazy('produto_list')

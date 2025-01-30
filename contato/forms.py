@@ -1,13 +1,19 @@
 from django import forms
-from .models import Produto, Categoria, Fornecedor
+from .models import Produto
 
 class ProdutoForm(forms.Form):
-    nome = forms.CharField(label="Nome do Produto", max_length=100)
-    descricao = forms.CharField(label="Descrição", widget=forms.Textarea, required=False)
-    preco = forms.DecimalField(label="Preço", max_digits=10, decimal_places=2)
-    categoria = forms.ModelChoiceField(queryset=Categoria.objects.all(), label="Categoria")
-    fornecedor = forms.ModelMultipleChoiceField(
-        queryset=Fornecedor.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        label="Fornecedores"
-    )
+   class Meta:
+      model = Produto
+      fields = ['nome','descricao','preco','quantidade_estoque','codigo','categoria','fornecedor']
+
+def clean_nome(self):
+   nome = self.clean_data.get('nome')
+   if len(nome) < 3:
+      raise forms.ValidationError('O nome do produto deve conter pelo menos 3 caracteres')
+   return nome
+
+def clean_preco(self):
+   preco = self.clean_data.get('preco')
+   if preco <=0:
+      raise forms.ValidationError('O preço deve ser maior ou igual a zero')
+   return preco

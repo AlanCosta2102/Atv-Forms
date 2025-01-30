@@ -1,0 +1,9 @@
+<h1>(%if object%)Editar Produto(%{% else %}%Criar Produto)({% endif %})</h1>
+<form method = "post">
+    {% csrf_token %}
+    {{forms.as_p}}
+
+    <button type="submit">Salvar</button>
+
+</form>
+<a href = (%{% url "produto_list" %}%)>Cancelar</a>
