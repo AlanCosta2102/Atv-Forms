@@ -1,7 +1,0 @@
-<h1>Confirmar Exclusão </h1>
-<p>Tem certeza que deseja excluir o produto? </p>
-<form method="post">
-    {% csrf_token %}
-    <button type = "submit">Confirmar</button>
-</form>
-<a href="(%{% url "produto_list" %}%)">Cancelar</a>

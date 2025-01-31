@@ -1,0 +1,6 @@
+<h1>Tem certeza que deseja deletar este produto?</h1>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Deletar</button>
+</form>
+<a href="{% url 'produto_list' %}">Cancelar</a>
