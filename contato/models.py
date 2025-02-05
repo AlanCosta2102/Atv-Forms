@@ -28,7 +28,7 @@ class Produto(models.Model):
         validators=[MinValueValidator(0, message="A quantidade em estoque deve ser um número inteiro maior ou igual a zero.")]
     )
     codigo = models.CharField(
-        max_length=50,
+        max_length=100,
         unique=True,
         validators=[RegexValidator(regex=r'^[a-zA-Z0-9]+$', message="O código do produto deve conter apenas letras e números.")]
     )
