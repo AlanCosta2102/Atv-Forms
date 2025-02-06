@@ -3,12 +3,13 @@ from django.urls import reverse_lazy
 from .forms import ProdutoForm
 from .models import Produto
 from django.shortcuts import render
+from django.core.paginator import Paginator
 
 class ProdutoListView(ListView):
     model = Produto
     template_name = "produto_list.html"
     context_object_name = "produtos"
-
+    paginate_by = 5
 
 class ProdutoCreateView(CreateView):
     model = Produto
@@ -29,3 +30,20 @@ class ProdutoUpdateView(UpdateView):
     
 def home(request):
     return render(request, 'home.html')
+
+def get_queryset(self):
+    queryset = Produto.objects.all()
+    nome = self.request.GET.get('nome')
+    preco_min = self.request.GET.get('preco_min')
+    preco_max = self.request.GET.get('preco_max')
+
+    if nome:
+        queryset.filter(nome__icontains=nome)
+    if preco_min:
+        queryset = queryset.filter(preco__get=preco_min)
+    if preco_max:
+        queryset = queryset.filter(preco__get=preco_max)
+
+    return queryset
+
+
