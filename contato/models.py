@@ -9,6 +9,7 @@ class Categoria(models.Model):
 
 class Fornecedor(models.Model):
     nome = models.CharField(max_length=100)
+    email = models.EmailField(null=True, blank=True)
 
     def __str__(self):
         return self.nome
@@ -25,11 +26,13 @@ class Produto(models.Model):
         validators=[MinValueValidator(0.01, message="O preço deve ser maior que zero.")]
     )
     quantidade_estoque = models.PositiveIntegerField(
+        default=0,
         validators=[MinValueValidator(0, message="A quantidade em estoque deve ser um número inteiro maior ou igual a zero.")]
     )
     codigo = models.CharField(
         max_length=10,
         unique=True,
+        default="DEFAULT123", 
         validators=[RegexValidator(regex=r'^[a-zA-Z0-9]+$', message="O código do produto deve conter apenas letras e números.")]
     )
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name="produtos")

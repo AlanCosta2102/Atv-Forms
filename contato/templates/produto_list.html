@@ -1,14 +1,5 @@
 <h1>Lista de Produtos</h1>
-<table>
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Preço</th>
-            <th>Quantidade em Estoque</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
+
         {% for produto in produto %}
         <tr>
             <td>{{ produto.nome }}</td>
@@ -23,3 +14,32 @@
     </tbody>
 </table>
 <a href="{% url 'create_produto' %}">Criar Novo Produto</a>
+{% if is_paginated %}
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">Primeira</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+        {% endif %}
+
+        <span>Página {{ page_obj.number }} de {{ paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
+            <a href="?page={{ paginator.num_pages }}">Última</a>
+        {% endif %}
+    </div>
+{% endif %}
+<form method="GET">
+    <input type="text" name="nome" placeholder="Buscar por nome" value="{{ request.GET.nome }}">
+    <input type="number" name="preco_min" placeholder="Preço mínimo" value="{{ request.GET.preco_min }}">
+    <input type="number" name="preco_max" placeholder="Preço máximo" value="{{ request.GET.preco_max }}">
+    <button type="submit">Filtrar</button>
+</form>
+
+<ul>
+    {% for produto in produtos %}
+        <li>{{ produto.nome }} - R$ {{ produto.preco }}</li>
+    {% empty %}
+        <li>Nenhum produto encontrado.</li>
+    {% endfor %}
+</ul>

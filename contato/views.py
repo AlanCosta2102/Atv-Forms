@@ -32,18 +32,20 @@ def home(request):
     return render(request, 'home.html')
 
 def get_queryset(self):
-    queryset = Produto.objects.all()
-    nome = self.request.GET.get('nome')
-    preco_min = self.request.GET.get('preco_min')
-    preco_max = self.request.GET.get('preco_max')
+        queryset = Produto.objects.all()
+        nome = self.request.GET.get('nome')
+        preco_min = self.request.GET.get('preco_min')
+        preco_max = self.request.GET.get('preco_max')
 
-    if nome:
-        queryset.filter(nome__icontains=nome)
-    if preco_min:
-        queryset = queryset.filter(preco__get=preco_min)
-    if preco_max:
-        queryset = queryset.filter(preco__get=preco_max)
+        if nome:
+            queryset = queryset.filter(nome__icontains=nome)
 
-    return queryset
+        if preco_min:
+            queryset = queryset.filter(preco__gte=preco_min)
+
+        if preco_max:
+            queryset = queryset.filter(preco__lte=preco_max)
+
+        return queryset
 
 
