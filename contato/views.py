@@ -4,6 +4,7 @@ from .forms import ProdutoForm
 from .models import Produto
 from django.shortcuts import render
 from django.core.paginator import Paginator
+from django.views.generic import TemplateView
 
 class ProdutoListView(ListView):
     model = Produto
@@ -49,3 +50,5 @@ def get_queryset(self):
         return queryset
 
 
+class DashboardView(TemplateView):
+    template_name = 'dashboard.html'
