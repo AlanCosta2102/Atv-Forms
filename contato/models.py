@@ -1,5 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, RegexValidator
+from django.shortcuts import render,redirect
+from django.views import View
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=100)
@@ -37,6 +39,7 @@ class Produto(models.Model):
     )
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name="produtos")
     fornecedor = models.ManyToManyField(Fornecedor, related_name="produtos")
+    imagem = models.ImageField(upload_to='produto/',null=True,blank=True)
 
     def __str__(self):
         return self.nome

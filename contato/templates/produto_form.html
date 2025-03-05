@@ -1,7 +1,17 @@
 <h1>{% if form.instance.pk %}Editar Produto{% else %}Criar Produto{% endif %}</h1>
-<form method="post">
+
+<form method="post" enctype="multipart/form-data">  
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Salvar</button>
 </form>
+
 <a href="{% url 'produto_list' %}">Cancelar</a>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>  
+        {% endfor %}
+    </ul>
+{% endif %}
